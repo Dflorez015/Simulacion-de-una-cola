@@ -8,7 +8,7 @@ public class SimulacionDeUnaCola {
         VentanaSimulador ventana = new VentanaSimulador();
         ventana.setTitle("Simulador de colas");
         ventana.setLocationRelativeTo(null);
-        ventana.setVisible(true);
+        ventana.setVisible(true);        
     }
     
 }

@@ -2,6 +2,8 @@
 
 package simulaciondeunacola;
 
+import javax.swing.table.DefaultTableModel;
+
 
 public class VentanaSimulador extends javax.swing.JFrame {
 
@@ -22,11 +24,13 @@ public class VentanaSimulador extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTArchivo = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTNumeroDeArchivo = new javax.swing.JTable();
+        jTtiempoDelArchivo = new javax.swing.JTable();
         jBtCargarDatos = new javax.swing.JButton();
         jBtIniciarSimulacion = new javax.swing.JButton();
         jBtSalir = new javax.swing.JButton();
         jLImagen = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTNumeroDeArchivo = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -67,18 +71,23 @@ public class VentanaSimulador extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTArchivo);
 
-        jTNumeroDeArchivo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTNumeroDeArchivo.setModel(new javax.swing.table.DefaultTableModel(
+        jTtiempoDelArchivo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTtiempoDelArchivo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "N°"
+                "Tiempo"
             }
         ));
-        jScrollPane2.setViewportView(jTNumeroDeArchivo);
+        jScrollPane2.setViewportView(jTtiempoDelArchivo);
 
         jBtCargarDatos.setText("Cargar Datos");
+        jBtCargarDatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtCargarDatosActionPerformed(evt);
+            }
+        });
 
         jBtIniciarSimulacion.setText("Iniciar Simulación");
 
@@ -91,15 +100,28 @@ public class VentanaSimulador extends javax.swing.JFrame {
 
         jLImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/simulaciondeunacola/Imagenes/cola.PNG"))); // NOI18N
 
+        jTNumeroDeArchivo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTNumeroDeArchivo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "N°"
+            }
+        ));
+        jScrollPane3.setViewportView(jTNumeroDeArchivo);
+
         javax.swing.GroupLayout jDPPlanoCentralLayout = new javax.swing.GroupLayout(jDPPlanoCentral);
         jDPPlanoCentral.setLayout(jDPPlanoCentralLayout);
         jDPPlanoCentralLayout.setHorizontalGroup(
             jDPPlanoCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDPPlanoCentralLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLImagen)
                 .addContainerGap())
@@ -120,7 +142,8 @@ public class VentanaSimulador extends javax.swing.JFrame {
                         .addGap(20, 20, 20)
                         .addGroup(jDPPlanoCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jDPPlanoCentralLayout.createSequentialGroup()
                         .addGap(61, 61, 61)
                         .addComponent(jLImagen)))
@@ -137,6 +160,7 @@ public class VentanaSimulador extends javax.swing.JFrame {
         jDPPlanoCentral.setLayer(jBtIniciarSimulacion, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDPPlanoCentral.setLayer(jBtSalir, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDPPlanoCentral.setLayer(jLImagen, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDPPlanoCentral.setLayer(jScrollPane3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -160,9 +184,44 @@ public class VentanaSimulador extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jBtSalirActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jBtCargarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtCargarDatosActionPerformed
+        CargarTablas();
+    }//GEN-LAST:event_jBtCargarDatosActionPerformed
+
+    public void CargarTablas(){
+        Archivo archivo= new Archivo() ;
+        archivo.Cargar();
+        if(!archivo.getCola().isEmpty()){
+            int contadorauxiliar=1;
+             Nodo nodoRecorrer = archivo.getCola().peek(); 
+             int tamañoDeLaCola = (archivo.getCola().getSize())/2;
+             ModeloDeTablas(tamañoDeLaCola);
+             Nodo nodoSiguiente = nodoRecorrer.getLink();
+             while (nodoSiguiente.getLink()!=null) {                   
+                jTArchivo.setValueAt(nodoRecorrer.getValor(),contadorauxiliar-1 ,0);
+                jTtiempoDelArchivo.setValueAt(nodoSiguiente.getValor(),contadorauxiliar-1,0);
+                jTNumeroDeArchivo.setValueAt(contadorauxiliar,  contadorauxiliar-1,0);         
+                nodoRecorrer = nodoSiguiente.getLink();
+                nodoSiguiente = nodoRecorrer.getLink();// 
+                contadorauxiliar++;
+                if(contadorauxiliar == tamañoDeLaCola){
+                jTArchivo.setValueAt(nodoRecorrer.getValor(),contadorauxiliar-1 ,0);
+                jTtiempoDelArchivo.setValueAt(nodoSiguiente.getValor(),contadorauxiliar-1,0);
+                jTNumeroDeArchivo.setValueAt(contadorauxiliar,  contadorauxiliar-1,0);
+                }
+                System.out.println(contadorauxiliar);
+            } 
+        }
+        
+    }
+    public void ModeloDeTablas(int numerodefilas){
+            DefaultTableModel modeloArchivo = (DefaultTableModel) jTArchivo.getModel(); 
+            DefaultTableModel modeloNumero = (DefaultTableModel) jTNumeroDeArchivo.getModel(); 
+            DefaultTableModel modeloTiempo = (DefaultTableModel) jTtiempoDelArchivo.getModel();            
+            modeloArchivo.setNumRows(numerodefilas);
+            modeloNumero.setNumRows(numerodefilas);
+            modeloTiempo.setNumRows(numerodefilas);
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -205,7 +264,9 @@ public class VentanaSimulador extends javax.swing.JFrame {
     private javax.swing.JPanel jPCabeza;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTArchivo;
     private javax.swing.JTable jTNumeroDeArchivo;
+    private javax.swing.JTable jTtiempoDelArchivo;
     // End of variables declaration//GEN-END:variables
 }
